@@ -82,6 +82,20 @@ create index if not exists bets_user_idx on public.bets (user_id);
 create index if not exists bets_match_idx on public.bets (match_id);
 
 -- ------------------------------------------------------------
+-- 3.5. AJUSTES DE PONTOS  (bônus / penalidades / correções — só admin)
+-- ------------------------------------------------------------
+-- Pontos "avulsos" que não vêm de palpite. Entram no ranking somados
+-- à pontuação calculada. points pode ser negativo (penalidade).
+create table if not exists public.adjustments (
+  id         bigint generated always as identity primary key,
+  user_id    uuid not null references public.profiles (id) on delete cascade,
+  points     int  not null,
+  reason     text,
+  created_at timestamptz not null default now()
+);
+create index if not exists adjustments_user_idx on public.adjustments (user_id);
+
+-- ------------------------------------------------------------
 -- 4. REGRA DE PONTUAÇÃO  (ajuste os números aqui se quiser)
 -- ------------------------------------------------------------
 --   Placar exato ............................... 10 pontos
@@ -122,7 +136,8 @@ as $$
   select
     p.id,
     p.display_name,
-    coalesce(sum(public.bet_points(b.home_pred, b.away_pred, m.home_score, m.away_score)), 0) as points,
+    coalesce(sum(public.bet_points(b.home_pred, b.away_pred, m.home_score, m.away_score)), 0)
+      + coalesce((select sum(a.points) from public.adjustments a where a.user_id = p.id), 0) as points,
     count(*) filter (
       where m.status = 'finished' and b.home_pred = m.home_score and b.away_pred = m.away_score
     ) as exact_hits,
@@ -139,9 +154,10 @@ grant execute on function public.get_standings() to anon, authenticated;
 -- ------------------------------------------------------------
 -- 6. SEGURANÇA (Row Level Security)
 -- ------------------------------------------------------------
-alter table public.profiles enable row level security;
-alter table public.matches  enable row level security;
-alter table public.bets     enable row level security;
+alter table public.profiles    enable row level security;
+alter table public.matches     enable row level security;
+alter table public.bets        enable row level security;
+alter table public.adjustments enable row level security;
 
 -- helper: o usuário atual é admin?
 create or replace function public.is_admin()
@@ -195,6 +211,12 @@ create policy "apostas: atualizar antes do jogo"
     auth.uid() = user_id
     and exists (select 1 from public.matches m where m.id = match_id and m.kickoff > now())
   );
+
+-- --- ADJUSTMENTS --- (só admin gerencia; o ranking lê via função SECURITY DEFINER)
+drop policy if exists "ajustes: admin gerencia" on public.adjustments;
+create policy "ajustes: admin gerencia"
+  on public.adjustments for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
 
 -- ------------------------------------------------------------
 -- 7. DADOS DE EXEMPLO (apague depois — gerencie pelo painel Admin)

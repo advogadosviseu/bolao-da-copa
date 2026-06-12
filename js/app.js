@@ -134,12 +134,22 @@ function setAuthMsg(text, kind = "") {
 }
 
 function traduzErro(msg) {
-  const m = msg.toLowerCase();
-  if (m.includes("invalid login")) return "E-mail ou senha incorretos.";
-  if (m.includes("already registered")) return "Este e-mail já tem conta. Tente entrar.";
-  if (m.includes("password")) return "Senha inválida (mínimo 6 caracteres).";
-  if (m.includes("email")) return "E-mail inválido.";
-  return msg;
+  const m = (msg || "").toLowerCase();
+  if (m.includes("rate limit") || m.includes("too many"))
+    return "Limite de e-mails do Supabase atingido. Aguarde alguns minutos (ou desligue a confirmação por e-mail).";
+  if (m.includes("invalid login") || m.includes("invalid credentials"))
+    return "E-mail ou senha incorretos.";
+  if (m.includes("already registered") || m.includes("already exists"))
+    return "Este e-mail já tem conta. Tente entrar.";
+  if (m.includes("not confirmed"))
+    return "E-mail ainda não confirmado. Verifique sua caixa de entrada.";
+  if (m.includes("signup") && m.includes("disabled"))
+    return "Cadastros estão desativados no Supabase.";
+  if (m.includes("password"))
+    return "Senha inválida (mínimo 6 caracteres).";
+  if (m.includes("email") && m.includes("invalid"))
+    return "E-mail inválido.";
+  return msg || "Não foi possível concluir. Tente novamente.";
 }
 
 // ============================================================
