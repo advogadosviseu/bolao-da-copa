@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bolão da Copa 2026</title>
+  <meta name="description" content="Bolão da Copa do Mundo — palpite nos jogos e acompanhe o ranking." />
+
+  <!-- Fontes Viseu: Dita Cd (display, local) + Roboto (corpo) + JetBrains Mono (placar) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ======================== HEADER ======================== -->
+  <header class="site-header" id="siteHeader" hidden>
+    <div class="brand">
+      <img class="brand-logo" src="assets/viseu-logo-color.png" alt="Viseu Advogados" />
+      <span class="brand-divider" aria-hidden="true"></span>
+      <div class="brand-text">
+        <span class="brand-name" id="brandName">Bolão da Copa</span>
+        <span class="brand-edition" id="brandEdition">2026</span>
+      </div>
+    </div>
+    <nav class="main-nav" id="mainNav">
+      <button class="nav-btn is-active" data-view="matches">Jogos &amp; Palpites</button>
+      <button class="nav-btn" data-view="ranking">Ranking</button>
+      <button class="nav-btn" data-view="admin" id="navAdmin" hidden>Admin</button>
+    </nav>
+    <div class="user-box">
+      <span class="user-name" id="userName"></span>
+      <button class="btn-ghost" id="logoutBtn">Sair</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ======================== AUTH ======================== -->
+    <section class="view view-auth" data-view="auth">
+      <div class="auth-hero">
+        <div class="hero-kicker">Copa do Mundo · 2026</div>
+        <h1 class="hero-title">BOLÃO<br><span class="hero-title-accent">DA COPA</span></h1>
+        <p class="hero-sub">Cada participante dá seu palpite no placar dos jogos. A pontuação consolida em um ranking único, atualizado a cada resultado.</p>
+        <ul class="hero-scoring" id="heroScoring"></ul>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab is-active" data-tab="login">Entrar</button>
+          <button class="auth-tab" data-tab="signup">Criar conta</button>
+        </div>
+
+        <!-- Login -->
+        <form class="auth-form" id="loginForm">
+          <label>E-mail
+            <input type="email" name="email" autocomplete="email" required placeholder="voce@email.com" />
+          </label>
+          <label>Senha
+            <input type="password" name="password" autocomplete="current-password" required placeholder="••••••••" />
+          </label>
+          <button type="submit" class="btn-primary">Entrar no bolão</button>
+        </form>
+
+        <!-- Cadastro -->
+        <form class="auth-form" id="signupForm" hidden>
+          <label>Nome de exibição
+            <input type="text" name="display_name" required placeholder="Como você aparece no ranking" maxlength="40" />
+          </label>
+          <label>E-mail
+            <input type="email" name="email" autocomplete="email" required placeholder="voce@email.com" />
+          </label>
+          <label>Senha
+            <input type="password" name="password" autocomplete="new-password" required minlength="6" placeholder="mínimo 6 caracteres" />
+          </label>
+          <button type="submit" class="btn-primary">Criar minha conta</button>
+        </form>
+
+        <p class="auth-msg" id="authMsg" role="alert"></p>
+      </div>
+    </section>
+
+    <!-- ======================== JOGOS / PALPITES ======================== -->
+    <section class="view view-matches" data-view="matches" hidden>
+      <div class="view-head">
+        <h2 class="view-title">Jogos &amp; Palpites</h2>
+        <div class="filter-row" id="stageFilter"></div>
+      </div>
+      <p class="hint">Salve o placar que você acha que vai dar. As apostas travam no apito inicial de cada jogo.</p>
+      <div class="match-list" id="matchList"></div>
+      <p class="empty-state" id="matchesEmpty" hidden>Nenhum jogo cadastrado ainda. Volte em breve! 🏟️</p>
+    </section>
+
+    <!-- ======================== RANKING ======================== -->
+    <section class="view view-ranking" data-view="ranking" hidden>
+      <div class="view-head">
+        <h2 class="view-title">Classificação geral</h2>
+        <button class="btn-ghost" id="refreshRanking">↻ Atualizar</button>
+      </div>
+      <div class="ranking-wrap">
+        <table class="ranking-table" id="rankingTable">
+          <thead>
+            <tr>
+              <th class="col-pos">#</th>
+              <th class="col-name">Participante</th>
+              <th class="col-num">Cravadas</th>
+              <th class="col-num">Palpites</th>
+              <th class="col-pts">Pontos</th>
+            </tr>
+          </thead>
+          <tbody id="rankingBody"></tbody>
+        </table>
+      </div>
+      <p class="empty-state" id="rankingEmpty" hidden>Ninguém pontuou ainda. Que comecem os jogos! ⚽</p>
+    </section>
+
+    <!-- ======================== ADMIN ======================== -->
+    <section class="view view-admin" data-view="admin" hidden>
+      <div class="view-head"><h2 class="view-title">Painel do administrador</h2></div>
+
+      <div class="admin-panel admin-bulk">
+        <h3>Carga em lote</h3>
+        <p class="hint">Uma linha por jogo. Separe os campos por <b>;</b> (ponto e vírgula) ou por <b>TAB</b> (dá para colar direto do Excel). Ordem das colunas:</p>
+        <p class="bulk-format">Fase&nbsp;;&nbsp;Mandante&nbsp;;&nbsp;Visitante&nbsp;;&nbsp;Data e hora&nbsp;<span>;&nbsp;Bandeira mandante&nbsp;;&nbsp;Bandeira visitante (opcionais)</span></p>
+        <textarea id="bulkInput" rows="8" spellcheck="false" placeholder="Grupo A ; México ; A definir ; 11/06/2026 17:00 ; 🇲🇽
+Grupo B ; Canadá ; A definir ; 12/06/2026 13:00 ; 🇨🇦
+Grupo D ; EUA ; A definir ; 12/06/2026 16:00 ; 🇺🇸"></textarea>
+        <div class="bulk-actions">
+          <button id="bulkImportBtn" class="btn-primary">Importar jogos</button>
+          <span class="bulk-count" id="bulkCount"></span>
+        </div>
+        <pre class="bulk-log" id="bulkLog" hidden></pre>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-panel">
+          <h3>Cadastrar novo jogo</h3>
+          <form id="newMatchForm" class="admin-form">
+            <label>Fase / Grupo
+              <input name="stage" placeholder="ex.: Grupo A, Oitavas, Final" value="Fase de grupos" required />
+            </label>
+            <div class="duo">
+              <label>Mandante <input name="home_team" placeholder="Brasil" required /></label>
+              <label>Bandeira <input name="home_flag" placeholder="🇧🇷" maxlength="4" /></label>
+            </div>
+            <div class="duo">
+              <label>Visitante <input name="away_team" placeholder="Argentina" required /></label>
+              <label>Bandeira <input name="away_flag" placeholder="🇦🇷" maxlength="4" /></label>
+            </div>
+            <label>Data e hora do jogo
+              <input name="kickoff" type="datetime-local" required />
+            </label>
+            <button type="submit" class="btn-primary">Adicionar jogo</button>
+          </form>
+        </div>
+
+        <div class="admin-panel">
+          <h3>Lançar resultados</h3>
+          <p class="hint">Informe o placar final. O ranking recalcula sozinho.</p>
+          <div class="admin-results" id="adminResults"></div>
+        </div>
+      </div>
+      <p class="admin-msg" id="adminMsg" role="alert"></p>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" hidden></div>
+
+  <footer class="site-footer">
+    <span>Bolão da Copa · Viseu Advogados · <span id="footerYear"></span></span>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

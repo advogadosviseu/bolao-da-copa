@@ -1,0 +1,116 @@
+# ============================================================
+#  BOLÃO DA COPA 2026 — carga em lote
+#  Cole o conteúdo no painel Admin > Carga em lote.
+#  Linhas iniciadas por # são ignoradas (comentários).
+#  Horários em horário de Brasília.
+# ============================================================
+
+# ---------- FASE DE GRUPOS ----------
+Grupo A ; México ; África do Sul ; 11/06/2026 16:00 ; 🇲🇽 ; 🇿🇦
+Grupo A ; Coreia do Sul ; República Tcheca ; 11/06/2026 23:00 ; 🇰🇷 ; 🇨🇿
+Grupo B ; Canadá ; Bósnia-Herzegovina ; 12/06/2026 16:00 ; 🇨🇦 ; 🇧🇦
+Grupo D ; Estados Unidos ; Paraguai ; 12/06/2026 22:00 ; 🇺🇸 ; 🇵🇾
+Grupo B ; Catar ; Suíça ; 13/06/2026 16:00 ; 🇶🇦 ; 🇨🇭
+Grupo C ; Brasil ; Marrocos ; 13/06/2026 19:00 ; 🇧🇷 ; 🇲🇦
+Grupo C ; Haiti ; Escócia ; 13/06/2026 22:00 ; 🇭🇹 ; 🏴󠁧󠁢󠁳󠁣󠁴󠁿
+Grupo D ; Austrália ; Turquia ; 14/06/2026 01:00 ; 🇦🇺 ; 🇹🇷
+Grupo E ; Alemanha ; Curaçao ; 14/06/2026 14:00 ; 🇩🇪 ; 🇨🇼
+Grupo F ; Países Baixos ; Japão ; 14/06/2026 17:00 ; 🇳🇱 ; 🇯🇵
+Grupo E ; Costa do Marfim ; Equador ; 14/06/2026 20:00 ; 🇨🇮 ; 🇪🇨
+Grupo F ; Suécia ; Tunísia ; 14/06/2026 23:00 ; 🇸🇪 ; 🇹🇳
+Grupo H ; Espanha ; Cabo Verde ; 15/06/2026 13:00 ; 🇪🇸 ; 🇨🇻
+Grupo G ; Bélgica ; Egito ; 15/06/2026 16:00 ; 🇧🇪 ; 🇪🇬
+Grupo H ; Arábia Saudita ; Uruguai ; 15/06/2026 19:00 ; 🇸🇦 ; 🇺🇾
+Grupo G ; Irã ; Nova Zelândia ; 15/06/2026 22:00 ; 🇮🇷 ; 🇳🇿
+Grupo I ; França ; Senegal ; 16/06/2026 16:00 ; 🇫🇷 ; 🇸🇳
+Grupo I ; Iraque ; Noruega ; 16/06/2026 19:00 ; 🇮🇶 ; 🇳🇴
+Grupo J ; Argentina ; Argélia ; 16/06/2026 22:00 ; 🇦🇷 ; 🇩🇿
+Grupo J ; Áustria ; Jordânia ; 17/06/2026 01:00 ; 🇦🇹 ; 🇯🇴
+Grupo K ; Portugal ; RD Congo ; 17/06/2026 14:00 ; 🇵🇹 ; 🇨🇩
+Grupo L ; Inglaterra ; Croácia ; 17/06/2026 17:00 ; 🏴󠁧󠁢󠁥󠁮󠁧󠁿 ; 🇭🇷
+Grupo L ; Gana ; Panamá ; 17/06/2026 20:00 ; 🇬🇭 ; 🇵🇦
+Grupo K ; Uzbequistão ; Colômbia ; 17/06/2026 23:00 ; 🇺🇿 ; 🇨🇴
+Grupo A ; República Tcheca ; África do Sul ; 18/06/2026 13:00 ; 🇨🇿 ; 🇿🇦
+Grupo B ; Suíça ; Bósnia-Herzegovina ; 18/06/2026 16:00 ; 🇨🇭 ; 🇧🇦
+Grupo B ; Canadá ; Catar ; 18/06/2026 19:00 ; 🇨🇦 ; 🇶🇦
+Grupo A ; México ; Coreia do Sul ; 18/06/2026 22:00 ; 🇲🇽 ; 🇰🇷
+Grupo D ; Estados Unidos ; Austrália ; 19/06/2026 16:00 ; 🇺🇸 ; 🇦🇺
+Grupo C ; Escócia ; Marrocos ; 19/06/2026 19:00 ; 🏴󠁧󠁢󠁳󠁣󠁴󠁿 ; 🇲🇦
+Grupo C ; Brasil ; Haiti ; 19/06/2026 21:30 ; 🇧🇷 ; 🇭🇹
+Grupo D ; Turquia ; Paraguai ; 20/06/2026 00:00 ; 🇹🇷 ; 🇵🇾
+Grupo F ; Países Baixos ; Suécia ; 20/06/2026 14:00 ; 🇳🇱 ; 🇸🇪
+Grupo E ; Alemanha ; Costa do Marfim ; 20/06/2026 17:00 ; 🇩🇪 ; 🇨🇮
+Grupo E ; Equador ; Curaçao ; 20/06/2026 21:00 ; 🇪🇨 ; 🇨🇼
+Grupo F ; Tunísia ; Japão ; 21/06/2026 01:00 ; 🇹🇳 ; 🇯🇵
+Grupo H ; Espanha ; Arábia Saudita ; 21/06/2026 13:00 ; 🇪🇸 ; 🇸🇦
+Grupo G ; Bélgica ; Irã ; 21/06/2026 16:00 ; 🇧🇪 ; 🇮🇷
+Grupo H ; Uruguai ; Cabo Verde ; 21/06/2026 19:00 ; 🇺🇾 ; 🇨🇻
+Grupo G ; Nova Zelândia ; Egito ; 21/06/2026 22:00 ; 🇳🇿 ; 🇪🇬
+Grupo J ; Argentina ; Áustria ; 22/06/2026 14:00 ; 🇦🇷 ; 🇦🇹
+Grupo I ; França ; Iraque ; 22/06/2026 18:00 ; 🇫🇷 ; 🇮🇶
+Grupo I ; Noruega ; Senegal ; 22/06/2026 21:00 ; 🇳🇴 ; 🇸🇳
+Grupo J ; Jordânia ; Argélia ; 23/06/2026 00:00 ; 🇯🇴 ; 🇩🇿
+Grupo K ; Portugal ; Uzbequistão ; 23/06/2026 14:00 ; 🇵🇹 ; 🇺🇿
+Grupo L ; Inglaterra ; Gana ; 23/06/2026 17:00 ; 🏴󠁧󠁢󠁥󠁮󠁧󠁿 ; 🇬🇭
+Grupo L ; Panamá ; Croácia ; 23/06/2026 20:00 ; 🇵🇦 ; 🇭🇷
+Grupo K ; Colômbia ; RD Congo ; 23/06/2026 23:00 ; 🇨🇴 ; 🇨🇩
+Grupo B ; Suíça ; Canadá ; 24/06/2026 16:00 ; 🇨🇭 ; 🇨🇦
+Grupo B ; Bósnia-Herzegovina ; Catar ; 24/06/2026 16:00 ; 🇧🇦 ; 🇶🇦
+Grupo C ; Escócia ; Brasil ; 24/06/2026 19:00 ; 🏴󠁧󠁢󠁳󠁣󠁴󠁿 ; 🇧🇷
+Grupo C ; Marrocos ; Haiti ; 24/06/2026 19:00 ; 🇲🇦 ; 🇭🇹
+Grupo A ; República Tcheca ; México ; 24/06/2026 22:00 ; 🇨🇿 ; 🇲🇽
+Grupo A ; África do Sul ; Coreia do Sul ; 24/06/2026 22:00 ; 🇿🇦 ; 🇰🇷
+Grupo E ; Curaçao ; Costa do Marfim ; 25/06/2026 17:00 ; 🇨🇼 ; 🇨🇮
+Grupo E ; Equador ; Alemanha ; 25/06/2026 17:00 ; 🇪🇨 ; 🇩🇪
+Grupo F ; Japão ; Suécia ; 25/06/2026 20:00 ; 🇯🇵 ; 🇸🇪
+Grupo F ; Tunísia ; Países Baixos ; 25/06/2026 20:00 ; 🇹🇳 ; 🇳🇱
+Grupo D ; Turquia ; Estados Unidos ; 25/06/2026 23:00 ; 🇹🇷 ; 🇺🇸
+Grupo D ; Paraguai ; Austrália ; 25/06/2026 23:00 ; 🇵🇾 ; 🇦🇺
+Grupo I ; Noruega ; França ; 26/06/2026 16:00 ; 🇳🇴 ; 🇫🇷
+Grupo I ; Senegal ; Iraque ; 26/06/2026 16:00 ; 🇸🇳 ; 🇮🇶
+Grupo H ; Cabo Verde ; Arábia Saudita ; 26/06/2026 21:00 ; 🇨🇻 ; 🇸🇦
+Grupo H ; Uruguai ; Espanha ; 26/06/2026 21:00 ; 🇺🇾 ; 🇪🇸
+Grupo G ; Egito ; Irã ; 27/06/2026 00:00 ; 🇪🇬 ; 🇮🇷
+Grupo G ; Nova Zelândia ; Bélgica ; 27/06/2026 00:00 ; 🇳🇿 ; 🇧🇪
+Grupo L ; Panamá ; Inglaterra ; 27/06/2026 18:00 ; 🇵🇦 ; 🏴󠁧󠁢󠁥󠁮󠁧󠁿
+Grupo L ; Croácia ; Gana ; 27/06/2026 18:00 ; 🇭🇷 ; 🇬🇭
+Grupo K ; Colômbia ; Portugal ; 27/06/2026 20:30 ; 🇨🇴 ; 🇵🇹
+Grupo K ; RD Congo ; Uzbequistão ; 27/06/2026 20:30 ; 🇨🇩 ; 🇺🇿
+Grupo J ; Argélia ; Áustria ; 27/06/2026 23:00 ; 🇩🇿 ; 🇦🇹
+Grupo J ; Jordânia ; Argentina ; 27/06/2026 23:00 ; 🇯🇴 ; 🇦🇷
+
+# ---------- MATA-MATA (times definidos depois; cargas individuais) ----------
+# Pode importar agora como "A definir" e editar os times quando o chaveamento sair,
+# ou deixar para incluir individualmente mais tarde.
+Rodada de 32 ; A definir ; A definir ; 28/06/2026 16:00
+Rodada de 32 ; A definir ; A definir ; 29/06/2026 14:00
+Rodada de 32 ; A definir ; A definir ; 29/06/2026 17:30
+Rodada de 32 ; A definir ; A definir ; 29/06/2026 22:00
+Rodada de 32 ; A definir ; A definir ; 30/06/2026 14:00
+Rodada de 32 ; A definir ; A definir ; 30/06/2026 18:00
+Rodada de 32 ; A definir ; A definir ; 30/06/2026 22:00
+Rodada de 32 ; A definir ; A definir ; 01/07/2026 13:00
+Rodada de 32 ; A definir ; A definir ; 01/07/2026 17:00
+Rodada de 32 ; A definir ; A definir ; 01/07/2026 21:00
+Rodada de 32 ; A definir ; A definir ; 02/07/2026 16:00
+Rodada de 32 ; A definir ; A definir ; 02/07/2026 20:00
+Rodada de 32 ; A definir ; A definir ; 03/07/2026 00:00
+Rodada de 32 ; A definir ; A definir ; 03/07/2026 15:00
+Rodada de 32 ; A definir ; A definir ; 03/07/2026 17:00
+Rodada de 32 ; A definir ; A definir ; 03/07/2026 22:30
+Oitavas de final ; A definir ; A definir ; 04/07/2026 14:00
+Oitavas de final ; A definir ; A definir ; 04/07/2026 18:00
+Oitavas de final ; A definir ; A definir ; 05/07/2026 17:00
+Oitavas de final ; A definir ; A definir ; 05/07/2026 21:00
+Oitavas de final ; A definir ; A definir ; 06/07/2026 15:00
+Oitavas de final ; A definir ; A definir ; 06/07/2026 20:00
+Oitavas de final ; A definir ; A definir ; 07/07/2026 13:00
+Oitavas de final ; A definir ; A definir ; 07/07/2026 17:00
+Quartas de final ; A definir ; A definir ; 09/07/2026 17:00
+Quartas de final ; A definir ; A definir ; 10/07/2026 16:00
+Quartas de final ; A definir ; A definir ; 11/07/2026 18:00
+Quartas de final ; A definir ; A definir ; 11/07/2026 21:00
+Semifinal ; A definir ; A definir ; 14/07/2026 16:00
+Semifinal ; A definir ; A definir ; 15/07/2026 16:00
+Disputa de 3º lugar ; A definir ; A definir ; 18/07/2026 18:00
+Final ; A definir ; A definir ; 19/07/2026 16:00
