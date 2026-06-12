@@ -355,6 +355,51 @@ input:focus { outline: 0; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(
 }
 .admin-result-row button:hover { background: var(--teal-700); }
 
+/* ===================== PÓDIO ===================== */
+.podium-card {
+  max-width: 560px; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 24px; box-shadow: var(--shadow-sm);
+}
+.podium-prize {
+  font-size: 13px; color: var(--dark); background: var(--teal-050);
+  border: 1px solid var(--teal-100); border-radius: var(--r-md); padding: 10px 12px; margin-bottom: 20px;
+}
+.podium-prize b { font-family: var(--font-mono); color: var(--teal); }
+.podium-row { display: grid; grid-template-columns: 34px 110px 1fr; align-items: center; gap: 12px; margin-bottom: 14px; }
+.podium-medal { font-size: 26px; text-align: center; }
+.podium-row label { font-family: var(--font-display); font-weight: 500; font-size: 15px; color: var(--dark); text-transform: none; letter-spacing: 0; }
+.podium-select {
+  font-family: var(--font-body); font-size: 15px; color: var(--dark);
+  background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-md);
+  padding: 11px 12px; width: 100%; cursor: pointer;
+}
+.podium-select:focus { outline: 0; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(28,135,136,.16); }
+.podium-select:disabled { background: var(--sand-100); color: var(--warm-gray); cursor: default; }
+.podium-card .btn-primary { margin-top: 8px; }
+.podium-msg { margin-top: 12px; font-size: 14px; font-weight: 500; min-height: 1em; }
+.podium-msg.ok { color: var(--teal); }
+.podium-msg.error { color: var(--orange); }
+.podium-result {
+  margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.podium-result .pr-line { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.podium-result .pr-pts { margin-left: auto; font-family: var(--font-mono); font-weight: 700; padding: 3px 9px; border-radius: var(--r-sm); }
+.podium-result .pr-pts.hit { color: var(--white); background: var(--teal); }
+.podium-result .pr-pts.miss { color: var(--warm-gray); background: var(--sand-100); }
+.podium-result .pr-total { font-family: var(--font-display); font-size: 18px; color: var(--orange); margin-top: 4px; }
+
+.admin-podium { margin-top: 20px; }
+.admin-podium-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.admin-podium-grid label { margin-bottom: 10px; }
+.admin-podium-grid .podium-select { margin-bottom: 6px; }
+@media (max-width: 640px) {
+  .podium-row { grid-template-columns: 30px 1fr; }
+  .podium-row label { grid-column: 2; }
+  .podium-row .podium-select { grid-column: 1 / -1; }
+  .admin-podium-grid { grid-template-columns: 1fr; }
+}
+
 /* ===================== TOAST ===================== */
 .toast {
   position: fixed; z-index: 50; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);

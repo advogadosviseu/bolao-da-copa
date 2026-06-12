@@ -23,6 +23,9 @@ const state = {
   matches: [],
   bets: new Map(),     // match_id -> bet
   stageFilter: "all",
+  teams: [],           // [{ name, flag }] times distintos do torneio
+  podiumConfig: null,  // { deadline, champion, runner_up, third }
+  podiumBet: null,     // { champion, runner_up, third }
 };
 
 // ---- atalhos DOM -------------------------------------------
@@ -30,6 +33,9 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const fmtDate = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
+});
+const fmtDateFull = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit",
 });
 
 // ============================================================
@@ -46,6 +52,7 @@ async function init() {
   wireNav();
   wireAdminForm();
   wireBulkImport();
+  wirePodium();
 
   const { data: { session } } = await sb.auth.getSession();
   await onAuthChange(session);
@@ -167,7 +174,8 @@ function showView(name) {
   $$(".view").forEach((v) => (v.hidden = v.dataset.view !== name));
   $$(".nav-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.view === name));
   if (name === "ranking") loadRanking();
-  if (name === "admin") renderAdminResults();
+  if (name === "podium") loadPodium();
+  if (name === "admin") { renderAdminResults(); loadPodiumAdmin(); }
 }
 
 // ============================================================
@@ -181,8 +189,23 @@ async function loadMatchesAndBets() {
 
   state.matches = matches ?? [];
   state.bets = new Map((bets ?? []).map((b) => [b.match_id, b]));
+  buildTeamList();
   renderStageFilter();
   renderMatches();
+}
+
+// Lista de times distintos do torneio (ignora "A definir"), com a bandeira.
+function buildTeamList() {
+  const map = new Map();
+  state.matches.forEach((m) => {
+    if (m.home_team && m.home_team !== "A definir" && !map.has(m.home_team))
+      map.set(m.home_team, m.home_flag || "");
+    if (m.away_team && m.away_team !== "A definir" && !map.has(m.away_team))
+      map.set(m.away_team, m.away_flag || "");
+  });
+  state.teams = [...map.entries()]
+    .map(([name, flag]) => ({ name, flag }))
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"));
 }
 
 function renderStageFilter() {
@@ -319,9 +342,7 @@ async function saveBet(m, card) {
 function betPoints(bh, ba, mh, ma) {
   if (mh == null || ma == null) return 0;
   if (bh === mh && ba === ma) return 10;
-  const sb_ = Math.sign(bh - ba), sm = Math.sign(mh - ma);
-  if (sb_ === sm && Math.abs(bh - ba) === Math.abs(mh - ma)) return 7;
-  if (sb_ === sm) return 5;
+  if (Math.sign(bh - ba) === Math.sign(mh - ma)) return 5;
   return 0;
 }
 
@@ -499,6 +520,160 @@ function setAdminMsg(text, kind = "") {
   el.textContent = text;
   el.className = "admin-msg " + kind;
   if (text) setTimeout(() => { if (el.textContent === text) { el.textContent = ""; } }, 4000);
+}
+
+// ============================================================
+//  PÓDIO
+// ============================================================
+function wirePodium() {
+  $("#savePodium").addEventListener("click", savePodium);
+  $("#savePodiumDeadline").addEventListener("click", savePodiumDeadline);
+  $("#savePodiumResult").addEventListener("click", savePodiumResult);
+}
+
+// <option>s com os times do torneio (value = nome do time)
+function teamOptions(selected) {
+  const blank = `<option value="">— escolha —</option>`;
+  return blank + state.teams.map((t) =>
+    `<option value="${esc(t.name)}"${t.name === selected ? " selected" : ""}>${t.flag ? t.flag + " " : ""}${esc(t.name)}</option>`
+  ).join("");
+}
+
+async function loadPodium() {
+  const [{ data: cfg, error: e1 }, { data: bet }] = await Promise.all([
+    sb.from("podium_config").select("*").eq("id", 1).maybeSingle(),
+    sb.from("podium_bets").select("*").eq("user_id", state.user.id).maybeSingle(),
+  ]);
+  if (e1 && /relation|does not exist|schema cache|find the table/i.test(e1.message)) {
+    $("#podiumStatus").textContent = "Recurso do pódio ainda não ativado no banco (rode a migração do SQL).";
+    return;
+  }
+  state.podiumConfig = cfg || {};
+  state.podiumBet = bet || null;
+  renderPodium();
+}
+
+function renderPodium() {
+  const cfg = state.podiumConfig || {};
+  const bet = state.podiumBet;
+  const deadline = cfg.deadline ? new Date(cfg.deadline) : null;
+  const locked = deadline ? deadline <= new Date() : false;
+  const resultSet = !!cfg.champion;   // resultado real lançado
+
+  $("#selChampion").innerHTML = teamOptions(bet?.champion);
+  $("#selRunnerUp").innerHTML = teamOptions(bet?.runner_up);
+  $("#selThird").innerHTML = teamOptions(bet?.third);
+
+  const disable = locked || resultSet;
+  ["#selChampion", "#selRunnerUp", "#selThird"].forEach((s) => ($(s).disabled = disable));
+  $("#savePodium").style.display = disable ? "none" : "";
+
+  const status = $("#podiumStatus");
+  if (!state.teams.length) status.textContent = "Os times aparecem aqui assim que os jogos forem cadastrados.";
+  else if (resultSet) status.textContent = "Pódio encerrado. Confira seu resultado abaixo.";
+  else if (locked) status.textContent = "Os palpites do pódio estão encerrados.";
+  else if (deadline) status.textContent = `Você pode escolher/alterar até ${fmtDateFull.format(deadline)}.`;
+  else status.textContent = "Em aberto. Escolha seu pódio e salve.";
+
+  const res = $("#podiumResult");
+  if (resultSet && bet) {
+    const linhas = [
+      ["🥇 Campeão", bet.champion, cfg.champion, 100],
+      ["🥈 Vice", bet.runner_up, cfg.runner_up, 70],
+      ["🥉 Terceiro", bet.third, cfg.third, 50],
+    ];
+    let total = 0;
+    const html = linhas.map(([label, pick, real, pts]) => {
+      const hit = pick && real && pick === real;
+      if (hit) total += pts;
+      return `<div class="pr-line">${label}: <b>${esc(pick || "—")}</b>
+        <span class="pr-pts ${hit ? "hit" : "miss"}">${hit ? "+" + pts : "0"} pts</span></div>`;
+    }).join("");
+    res.innerHTML = html + `<div class="pr-total">Bônus do pódio: ${total} pts</div>`;
+    res.hidden = false;
+  } else if (resultSet && !bet) {
+    res.innerHTML = `<div class="pr-line">Você não palpitou o pódio.</div>`;
+    res.hidden = false;
+  } else {
+    res.hidden = true;
+  }
+}
+
+async function savePodium() {
+  const champion = $("#selChampion").value;
+  const runner_up = $("#selRunnerUp").value;
+  const third = $("#selThird").value;
+  if (!champion || !runner_up || !third) {
+    setPodiumMsg("Escolha os três: campeão, vice e terceiro.", "error"); return;
+  }
+  if (new Set([champion, runner_up, third]).size < 3) {
+    setPodiumMsg("Os três times têm que ser diferentes.", "error"); return;
+  }
+  const { data, error } = await sb.from("podium_bets")
+    .upsert({ user_id: state.user.id, champion, runner_up, third, updated_at: new Date().toISOString() },
+            { onConflict: "user_id" })
+    .select().single();
+  if (error) {
+    setPodiumMsg(error.code === "42501" ? "Prazo do pódio encerrado." : "Erro ao salvar.", "error");
+    return;
+  }
+  state.podiumBet = data;
+  setPodiumMsg("Palpite do pódio salvo! ✓", "ok");
+  toast("Pódio salvo! 🏆");
+}
+
+function setPodiumMsg(text, kind = "") {
+  const el = $("#podiumMsg");
+  el.textContent = text;
+  el.className = "podium-msg " + kind;
+}
+
+// ---- admin do pódio ----
+async function loadPodiumAdmin() {
+  if (!state.podiumConfig) {
+    const { data } = await sb.from("podium_config").select("*").eq("id", 1).maybeSingle();
+    state.podiumConfig = data || {};
+  }
+  const cfg = state.podiumConfig || {};
+  $("#admPodiumDeadline").value = cfg.deadline ? toLocalInput(new Date(cfg.deadline)) : "";
+  $("#admChampion").innerHTML = teamOptions(cfg.champion);
+  $("#admRunnerUp").innerHTML = teamOptions(cfg.runner_up);
+  $("#admThird").innerHTML = teamOptions(cfg.third);
+}
+
+async function savePodiumDeadline() {
+  const v = $("#admPodiumDeadline").value;
+  const deadline = v ? new Date(v).toISOString() : null;
+  const { error } = await sb.from("podium_config").update({ deadline }).eq("id", 1);
+  if (error) { setPodiumAdminMsg(error.message, "error"); return; }
+  state.podiumConfig = { ...(state.podiumConfig || {}), deadline };
+  setPodiumAdminMsg("Prazo salvo. ✓", "ok");
+}
+
+async function savePodiumResult() {
+  const champion = $("#admChampion").value || null;
+  const runner_up = $("#admRunnerUp").value || null;
+  const third = $("#admThird").value || null;
+  if (champion && new Set([champion, runner_up, third].filter(Boolean)).size < [champion, runner_up, third].filter(Boolean).length) {
+    setPodiumAdminMsg("Os três lugares têm que ser times diferentes.", "error"); return;
+  }
+  const { error } = await sb.from("podium_config").update({ champion, runner_up, third }).eq("id", 1);
+  if (error) { setPodiumAdminMsg(error.message, "error"); return; }
+  state.podiumConfig = { ...(state.podiumConfig || {}), champion, runner_up, third };
+  setPodiumAdminMsg("Resultado do pódio lançado! Ranking atualizado. ✓", "ok");
+}
+
+function setPodiumAdminMsg(text, kind = "") {
+  const el = $("#podiumAdminMsg");
+  el.textContent = text;
+  el.className = "admin-msg " + kind;
+  if (text) setTimeout(() => { if (el.textContent === text) el.textContent = ""; }, 4000);
+}
+
+// Date -> "AAAA-MM-DDTHH:MM" (local) para o input datetime-local
+function toLocalInput(d) {
+  const p = (n) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
 // ============================================================

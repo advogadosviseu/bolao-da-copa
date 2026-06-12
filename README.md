@@ -13,8 +13,7 @@ consolida a pontuação de todo mundo em tempo real.
 | Acerto | Pontos |
 |---|---|
 | Placar exato | **10** |
-| Vencedor + saldo de gols | **7** |
-| Só o vencedor / empate | **5** |
+| Resultado certo (placar errado) | **5** |
 | Errou | 0 |
 
 > Quer mudar os valores? Edite a função `bet_points` em [`sql/schema.sql`](sql/schema.sql)

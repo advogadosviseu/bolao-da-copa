@@ -29,6 +29,7 @@
     </div>
     <nav class="main-nav" id="mainNav">
       <button class="nav-btn is-active" data-view="matches">Jogos &amp; Palpites</button>
+      <button class="nav-btn" data-view="podium">Pódio</button>
       <button class="nav-btn" data-view="ranking">Ranking</button>
       <button class="nav-btn" data-view="admin" id="navAdmin" hidden>Admin</button>
     </nav>
@@ -118,6 +119,33 @@
       <p class="empty-state" id="rankingEmpty" hidden>Ninguém pontuou ainda. Que comecem os jogos! ⚽</p>
     </section>
 
+    <!-- ======================== PÓDIO ======================== -->
+    <section class="view view-podium" data-view="podium" hidden>
+      <div class="view-head"><h2 class="view-title">Palpite do pódio</h2></div>
+      <p class="hint" id="podiumStatus"></p>
+      <div class="podium-card">
+        <p class="podium-prize">Bônus: campeão <b>+100</b> · vice <b>+70</b> · terceiro <b>+50</b>. Cada acerto conta de forma independente.</p>
+        <div class="podium-row">
+          <span class="podium-medal">🥇</span>
+          <label for="selChampion">Campeão</label>
+          <select id="selChampion" class="podium-select"></select>
+        </div>
+        <div class="podium-row">
+          <span class="podium-medal">🥈</span>
+          <label for="selRunnerUp">Vice</label>
+          <select id="selRunnerUp" class="podium-select"></select>
+        </div>
+        <div class="podium-row">
+          <span class="podium-medal">🥉</span>
+          <label for="selThird">Terceiro lugar</label>
+          <select id="selThird" class="podium-select"></select>
+        </div>
+        <button class="btn-primary" id="savePodium">Salvar palpite do pódio</button>
+        <p class="podium-msg" id="podiumMsg" role="alert"></p>
+        <div class="podium-result" id="podiumResult" hidden></div>
+      </div>
+    </section>
+
     <!-- ======================== ADMIN ======================== -->
     <section class="view view-admin" data-view="admin" hidden>
       <div class="view-head"><h2 class="view-title">Painel do administrador</h2></div>
@@ -164,6 +192,26 @@ Grupo D ; EUA ; A definir ; 12/06/2026 16:00 ; 🇺🇸"></textarea>
           <div class="admin-results" id="adminResults"></div>
         </div>
       </div>
+      <div class="admin-panel admin-podium">
+        <h3>Pódio</h3>
+        <div class="admin-podium-grid">
+          <div>
+            <label>Prazo para palpitar o pódio
+              <input type="datetime-local" id="admPodiumDeadline" />
+            </label>
+            <button class="btn-ghost" id="savePodiumDeadline">Salvar prazo</button>
+          </div>
+          <div>
+            <p class="hint">Resultado final (lança o bônus no ranking):</p>
+            <label>🥇 Campeão <select id="admChampion" class="podium-select"></select></label>
+            <label>🥈 Vice <select id="admRunnerUp" class="podium-select"></select></label>
+            <label>🥉 Terceiro <select id="admThird" class="podium-select"></select></label>
+            <button class="btn-primary" id="savePodiumResult">Lançar resultado do pódio</button>
+          </div>
+        </div>
+        <p class="admin-msg" id="podiumAdminMsg" role="alert"></p>
+      </div>
+
       <p class="admin-msg" id="adminMsg" role="alert"></p>
     </section>
 

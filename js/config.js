@@ -20,7 +20,6 @@ export const APP_EDITION = "2026";
 // Tabela de pontuação (apenas exibição — a contagem oficial está no SQL)
 export const SCORING = [
   { label: "Placar exato", points: 10 },
-  { label: "Vencedor + saldo de gols", points: 7 },
-  { label: "Só o vencedor / empate", points: 5 },
+  { label: "Resultado certo (placar errado)", points: 5 },
   { label: "Errou", points: 0 },
 ];
